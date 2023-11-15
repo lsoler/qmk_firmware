@@ -59,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, MO(LAYER_4), _______,  KC_ENT, KC_SPC, _______
+                                          KC_LGUI, _______, MO(LAYER_4),  KC_ENT, KC_SPC, _______
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -75,3 +75,39 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   )
 };
+
+void keyboard_post_init_user(void) {
+    // Clears the matrix from displaying any rgb effects at startup
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(HSV_OFF);
+}
+
+bool rgb_matrix_indicators_user(void) {
+    switch (get_highest_layer(layer_state)) {
+        case LAYER_1:
+            break;
+        case LAYER_3:
+            rgb_matrix_set_color_all(0,0,0);
+            rgb_matrix_set_color(42, 0, 204, 0); // key }
+            rgb_matrix_set_color(47, 0, 204, 0); // key {
+            rgb_matrix_set_color(46, 204, 0, 0); // key ]
+            rgb_matrix_set_color(43, 204, 0, 0); // key [
+            rgb_matrix_set_color(45, 0, 0, 204); // key )
+            rgb_matrix_set_color(50, 0, 0, 204); // key (
+            break;
+        // case LAYER_3:
+        //     rgb_matrix_set_color_all(0,0,0);
+        //     rgb_matrix_set_color(6, 75, 255, 75);
+        //     rgb_matrix_set_color(7, 75, 255, 75);
+        //     break;
+        // case LAYER_4: 
+        //     rgb_matrix_set_color_all(0, 0, 0);
+        //     rgb_matrix_set_color(6, 0, 204, 0);
+        //     rgb_matrix_set_color(7, 0, 204, 0);
+        //     rgb_matrix_set_color(8, 0, 204, 0);
+        //     break;
+        default:
+            break;
+    }
+    return false;
+}
